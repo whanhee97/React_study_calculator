@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 function Calc({ setHistories }) {
+  const [number, setNumber] = useState();
+
   return (
     <div className="calc">
       <div className="calc__title">Calculator</div>
