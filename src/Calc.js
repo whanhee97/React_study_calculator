@@ -1,9 +1,54 @@
 import React, { useState } from "react";
 
 function Calc({ setHistories }) {
-  const [score, setScore] = useState();
-  const onNumberClick = (num) => {
-    setScore(num);
+  const [score, setScore] = useState("0");
+  const [clear, setClear] = useState(false);
+  const [preScore, setPreScore] = useState(null);
+  const [preOper, setPreOper] = useState(null);
+  const onNumberClick = (n) => {
+    if (score != "0" && clear === false) {
+      setScore(score + n);
+    } else {
+      setScore(n);
+      setClear(false);
+    }
+  };
+
+  const onAcClick = () => {
+    setScore("0");
+    setClear(true);
+    setPreScore(null);
+  };
+
+  const onOperatorClick = (operator) => {
+    setClear(true);
+    if (operator === "=") {
+      let result;
+      if (preOper != null) {
+        switch (preOper) {
+          case "+":
+            result = Number(preScore) + Number(score);
+            break;
+          case "-":
+            result = Number(preScore) - Number(score);
+            break;
+          case "*":
+            result = Number(preScore) * Number(score);
+            break;
+          case "/":
+            result = Number(preScore) / Number(score);
+            break;
+          default:
+            break;
+        }
+        setScore(result);
+        setPreScore(result);
+      }
+      setPreOper(null);
+    } else {
+      setPreOper(operator);
+      setPreScore(score);
+    }
   };
 
   return (
@@ -12,7 +57,12 @@ function Calc({ setHistories }) {
       <div className="calc__score">{score}</div>
       <div className="calc__keyboard">
         <div className="calc__keyboard__main">
-          <div className="button calc__keyboard__ac">AC</div>
+          <div
+            className="button calc__keyboard__ac"
+            onClick={() => onAcClick()}
+          >
+            AC
+          </div>
           <div class="calc__keyboard__number">
             {new Array(3).fill().map((_, lineIdx) => {
               return (
@@ -23,7 +73,7 @@ function Calc({ setHistories }) {
                       <div
                         key={num}
                         class="button button--blue"
-                        onClick={() => onNumberClick(num)}
+                        onClick={() => onNumberClick(num.toString())}
                       >
                         {num}
                       </div>
@@ -41,11 +91,36 @@ function Calc({ setHistories }) {
           </div>
         </div>
         <div className="calc__keyboard__operator">
-          <div className="button button--deepblue">+</div>
-          <div className="button button--deepblue">-</div>
-          <div className="button button--deepblue">×</div>
-          <div className="button button--deepblue">÷</div>
-          <div className="button button--pink">=</div>
+          <div
+            className="button button--deepblue"
+            onClick={() => onOperatorClick("+")}
+          >
+            +
+          </div>
+          <div
+            className="button button--deepblue"
+            onClick={() => onOperatorClick("-")}
+          >
+            -
+          </div>
+          <div
+            className="button button--deepblue"
+            onClick={() => onOperatorClick("*")}
+          >
+            ×
+          </div>
+          <div
+            className="button button--deepblue"
+            onClick={() => onOperatorClick("/")}
+          >
+            ÷
+          </div>
+          <div
+            className="button button--pink"
+            onClick={() => onOperatorClick("=")}
+          >
+            =
+          </div>
         </div>
       </div>
     </div>
