@@ -39,10 +39,10 @@ function Calc({ setHistories }) {
         case "-":
           result = Number(preScore) - Number(score);
           break;
-        case "*":
+        case "×":
           result = Number(preScore) * Number(score);
           break;
-        case "/":
+        case "÷":
           result = Number(preScore) / Number(score);
           break;
         default:
@@ -74,6 +74,8 @@ function Calc({ setHistories }) {
       }
     }
   };
+
+  const operatorList = ["+", "-", "×", "÷"];
 
   return (
     <div className="calc">
@@ -115,30 +117,16 @@ function Calc({ setHistories }) {
           </div>
         </div>
         <div className="calc__keyboard__operator">
-          <div
-            className="button button--deepblue"
-            onClick={() => onOperatorClick("+")}
-          >
-            +
-          </div>
-          <div
-            className="button button--deepblue"
-            onClick={() => onOperatorClick("-")}
-          >
-            -
-          </div>
-          <div
-            className="button button--deepblue"
-            onClick={() => onOperatorClick("*")}
-          >
-            ×
-          </div>
-          <div
-            className="button button--deepblue"
-            onClick={() => onOperatorClick("/")}
-          >
-            ÷
-          </div>
+          {operatorList.map((operator) => {
+            return (
+              <div
+                className="button button--deepblue"
+                onClick={() => onOperatorClick(operator)}
+              >
+                {operator}
+              </div>
+            );
+          })}
           <div
             className="button button--pink"
             onClick={() => onOperatorClick("=")}
