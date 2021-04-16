@@ -22,32 +22,35 @@ function Calc({ setHistories }) {
 
   const onOperatorClick = (operator) => {
     setClear(true);
-    if (operator === "=") {
-      let result;
-      if (preOper != null) {
-        switch (preOper) {
-          case "+":
-            result = Number(preScore) + Number(score);
-            break;
-          case "-":
-            result = Number(preScore) - Number(score);
-            break;
-          case "*":
-            result = Number(preScore) * Number(score);
-            break;
-          case "/":
-            result = Number(preScore) / Number(score);
-            break;
-          default:
-            break;
-        }
-        setScore(result);
-        setPreScore(result);
-      }
-      setPreOper(null);
-    } else {
+    if (preOper === null) {
       setPreOper(operator);
       setPreScore(score);
+    } else {
+      let result;
+      switch (preOper) {
+        case "+":
+          result = Number(preScore) + Number(score);
+          break;
+        case "-":
+          result = Number(preScore) - Number(score);
+          break;
+        case "*":
+          result = Number(preScore) * Number(score);
+          break;
+        case "/":
+          result = Number(preScore) / Number(score);
+          break;
+        default:
+          break;
+      }
+      if (operator === "=") {
+        setScore(result);
+        setPreOper(null);
+      } else {
+        setScore(result);
+        setPreScore(result);
+        setPreOper(operator);
+      }
     }
   };
 
