@@ -5,7 +5,10 @@ function Calc({ setHistories }) {
   const [clear, setClear] = useState(false);
   const [preScore, setPreScore] = useState(null);
   const [preOper, setPreOper] = useState(null);
+  const [isOper, setIsOper] = useState(true); // 연산자인지 아닌지 판별 연속으로 들어왔을때 바꿔주기 위해서
+
   const onNumberClick = (n) => {
+    setIsOper(false);
     if (score != "0" && clear === false) {
       setScore(score + n);
     } else {
@@ -22,9 +25,11 @@ function Calc({ setHistories }) {
 
   const onOperatorClick = (operator) => {
     setClear(true);
-    if (preOper === null) {
+    setIsOper(true);
+    if (preOper === null || isOper === true) {
       setPreOper(operator);
       setPreScore(score);
+      console.log("inin");
     } else {
       let result;
       switch (preOper) {
@@ -46,10 +51,26 @@ function Calc({ setHistories }) {
       if (operator === "=") {
         setScore(result);
         setPreOper(null);
+        setHistories((histories) => [
+          histories,
+          <tr>
+            <td>
+              {preScore} {preOper} {score} = {result}
+            </td>
+          </tr>,
+        ]);
       } else {
         setScore(result);
         setPreScore(result);
         setPreOper(operator);
+        setHistories((histories) => [
+          histories,
+          <tr>
+            <td>
+              {preScore} {preOper} {score} = {result}
+            </td>
+          </tr>,
+        ]);
       }
     }
   };
